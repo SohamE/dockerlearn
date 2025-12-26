@@ -18,7 +18,7 @@ Templates/Blueprint for containers. Contains code and required tools/runtimes. R
 
 ## Docker Commands
 
-**Run**
+### Run
 
 ```
 docker run node
@@ -34,7 +34,7 @@ _flags_
 
 - it: expose interactive session of the container.
 
-**Process**
+### Process
 
 ```
 docker ps -a
