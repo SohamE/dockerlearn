@@ -18,6 +18,19 @@ Templates/Blueprint for containers. Contains code and required tools/runtimes. R
 
 Docker Image has a specific file name. exactly. _Dockerfile_.
 
+## Attached and Detached container
+
+The docker container that runs in the foreground that is a detached mode.
+When using ` docker run <image>` by default the attached mode is enabled. However for `docker start <container_name>` the container runs in detached mode.
+
+To run a container in detached mode use the flag _-d_.
+
+To attach to a detached container use the command attach
+
+```
+docker attach <container_name>
+```
+
 ## Image Instructions
 
 ### FROM
@@ -99,9 +112,22 @@ _flags_
 
 - it: expose interactive session of the container.
 - p: publish flag -> under which local port the exposed port will be accessed.
-  ```
-  -p local_port:exposed_port
-  ```
+- rm: Automatically remove when container is stopped
+- name: Add name to container.
+
+```
+-p local_port:exposed_port
+```
+
+-d: run in detached mode
+
+### Attach
+
+```
+docker attach <container_name>
+```
+
+Attach a detached container.
 
 ### Process
 
@@ -135,6 +161,79 @@ _parameter_
 
 - path for Dockerfile
 
+_flags_
+
+- t: <name>:<tag> eg. node:12
+
+### Restart
+
+```
+docker start <container_name>
+```
+
+_parameter_
+
+- container name from docker ps
+
+_flags_
+
+- a: attached mode
+
+### Logs
+
+```
+docker logs <container_name>
+```
+
+This prints all the logs printed in the application
+
+_flags_
+
+- f : follow mode. To keep on listening.
+
+### Remove
+
+```
+docker rm <container_name>
+```
+
+Used to remove stopped containers. Cannot remove running containers, results to error.
+
+### Images
+
+```
+docker images
+```
+
+Lists all the images we have
+
+### Remove images
+
+```
+docker rmi <image_id>
+```
+
+Removes images. Images can be removed if no container is using it.(running/stopped)
+
+### Prune
+
+```
+docker image prune
+```
+
+remove all images.
+
+### Copy
+
+```
+# copy to container like config files for application.
+docker cp <path_source_local> <container_name>:<path_destination_container>
+# copy to local like log files.
+docker cp <container_name>:<path_source_container> <path_destination_local>
+```
+
+Allows us to copy files to or from a container.
+
 ## Important Notes
 
 1. Images are Read only. If any change is made to the Dockerfile we have to re-build the image. When a Dockerfile is rebuild it uses the cached results of instruction, the results were cached when the first build ran. This is called layer based architecture, every instructions are layer. When 1 layer/instruction changes, the subsequent/next instructions are rebuild and not used from cache.
@@ -157,3 +256,12 @@ RUN npm install
 COPY . /app
 
 ```
+
+2. Docker run creates a new container. Use Docker restart to start an existing container. if the image did not change.
+
+3. If a container in detached state. There are 2 ways to check logs
+
+- attach the container again using ` docker attach <container_name>`. This will not show past logs.
+- use the log command using `docker log <container_name>`. Shows all logs
+
+4. Remove stopped containers automatically using _--rm_ flag on run command
