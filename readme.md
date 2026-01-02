@@ -31,6 +31,10 @@ To attach to a detached container use the command attach
 docker attach <container_name>
 ```
 
+## How to persist data to MongoDB
+
+Use volumes.
+
 ## Image Instructions
 
 ### FROM
