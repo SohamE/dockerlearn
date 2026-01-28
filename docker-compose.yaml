@@ -1,0 +1,36 @@
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    # environment:
+      # MOGO_ROOT_USERNAME= max
+      # MOGO_ROOT_USERNAME: max
+      # MOGO_ROOT_Password: secret
+
+  backend:
+    build: ./backend
+    ports: 
+      - '80:80'
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    # for interactive mode
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+# only named volumes should be specified here.
+volumes:
+  data: 
+  logs:
